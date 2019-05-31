@@ -140,7 +140,7 @@ type indentFormat struct {
 
 func (inf *indentFormat) Fmt() *Format {
 	return &Format{
-		Val:   "indent-" + inf.in,
+		Val:   "ql-indent-" + inf.in,
 		Place: Class,
 		Block: true,
 	}
