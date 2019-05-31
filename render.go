@@ -305,6 +305,11 @@ func (o *Op) getFormatter(keyword string, customFormats func(string, *Op) Format
 		return &alignFormat{
 			val: o.Attrs["align"],
 		}
+	case "video":
+		return &videoFormat{
+			src:   o.Data,
+			attrs: o.Attrs,
+		}
 	case "image":
 		return &imageFormat{
 			src: o.Data,

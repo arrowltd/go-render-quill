@@ -1,6 +1,7 @@
 package quill
 
 import (
+	"fmt"
 	"io"
 	"strconv"
 )
@@ -106,6 +107,33 @@ func (imf *imageFormat) Write(buf io.Writer) {
 		io.WriteString(buf, strconv.Quote(imf.alt))
 	}
 	buf.Write([]byte{'>'})
+}
+
+// video
+type videoFormat struct {
+	src   string
+	attrs map[string]string
+}
+
+func (*videoFormat) Fmt() *Format { return nil } // The body contains the entire element.
+
+func (vif *videoFormat) HasFormat(o *Op) bool {
+	return o.Type == "video" && o.Data == vif.src
+}
+
+// videoFormat implements the FormatWriter interface.
+func (vif *videoFormat) Write(buf io.Writer) {
+	blockClassList := []string{"ql-video"}
+	for attr, val := range vif.attrs {
+		if attr == "indent" {
+			blockClassList = append(blockClassList, fmt.Sprintf("ql-indent-%s", val))
+		} else if attr == "align" {
+			blockClassList = append(blockClassList, fmt.Sprintf("ql-align-%s", val))
+		}
+	}
+	videoElement := fmt.Sprintf(`
+		<iframe %s frameborder="0" allowfullscreen="true" src="%s"></iframe>`, classesList(blockClassList), vif.src)
+	buf.Write([]byte(videoElement))
 }
 
 // strikethrough
