@@ -39,8 +39,8 @@ type underlineFormat struct{}
 
 func (*underlineFormat) Fmt() *Format {
 	return &Format{
-		Val:   "u",
-		Place: Tag,
+		Val:   "text-decoration: underline;",
+		Place: Style,
 	}
 }
 
